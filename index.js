@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -11,7 +12,7 @@ app.use(express.json());
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+
 const uri = `mongodb+srv://${process.env.ADMIN_USER}:${process.env.ADMIN_PASS}@cluster0.jvkz9mr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -35,6 +36,15 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result)
     })
+
+    app.get("/singleItems/:id", async (req, res) => {
+        console.log(req.params.id);
+        const result = await craftCollection.findOne({
+            _id: new ObjectId(req.params.id),
+        });
+        console.log(result);
+        res.send(result);
+    });
 
     app.post('/craftitems', async(req, res)=> {
         const newItem = req.body;
