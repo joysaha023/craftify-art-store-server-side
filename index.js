@@ -29,6 +29,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const craftCollection = client.db('craftStoreDB').collection('craftItemDB');
+    const categoryCollection = client.db('craftCategory').collection('craftCategoryDB')
 
 
     app.get('/craftitems', async(req, res) => {
@@ -53,6 +54,15 @@ async function run() {
         res.send(result)
     })
 
+
+
+    //category collection 
+    app.post('/craftcategory', async(req, res) => {
+      const newdata = req.body;
+      console.log(newdata);
+      const result = await categoryCollection.insertOne(newdata)
+      res.send(result)
+    })
 
 
 
