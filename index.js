@@ -57,6 +57,13 @@ async function run() {
 
 
     //category collection 
+    app.get('/craftcategory', async(req, res) => {
+      const cursor = categoryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+  })
+
+
     app.post('/craftcategory', async(req, res) => {
       const newdata = req.body;
       console.log(newdata);
