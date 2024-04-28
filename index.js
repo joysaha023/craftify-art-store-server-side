@@ -60,7 +60,13 @@ async function run() {
         res.send(result)
     })
 
-
+    app.delete("/delete/:id", async (req, res) => {
+      const result = await craftCollection.deleteOne({
+        _id: new ObjectId(req.params.id)
+      })
+      console.log(result);
+      res.send(result)
+    })
 
     //category collection 
     app.get('/craftcategory', async(req, res) => {
