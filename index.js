@@ -53,6 +53,33 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/updateItem/:id", async (req, res) => {
+      console.log(req.params.id);
+      const result = await craftCollection.findOne({_id: new ObjectId(req.params.id) })
+      res.send(result)
+    })
+
+    app.put("/updateInfoo/:id", async (req, res) => {
+      console.log(req.params.id)
+      const query = { _id: new ObjectId(req.params.id)};
+      const data = {
+        $set:{
+          image:req.body.image,
+          item_name:req.body.item_name,
+          subcategory_Name:req.body.subcategory_Name,
+          description:req.body.description,
+          price:req.body.price,
+          rating:req.body.rating,
+          customization:req.body.customization,
+          processing_time:req.body.processing_time,
+          stock_status:req.body.stock_status,
+        }
+      }
+      const result = await craftCollection.updateOne(query, data)
+      console.log(result)
+      res.send(result)
+    })
+
     app.post('/craftitems', async(req, res)=> {
         const newItem = req.body;
         console.log(newItem);
