@@ -6,7 +6,11 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //middleware
-app.use(cors());
+
+app.use(cors({
+  origin:["https://craftify-art-store.web.app", "http://localhost:5173"],
+  credentials: true,
+}));
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.ADMIN_USER}:${process.env.ADMIN_PASS}@cluster0.jvkz9mr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -64,7 +68,8 @@ async function run() {
 
     app.put("/updateInfoo/:id", async (req, res) => {
       console.log(req.params.id);
-      const query = { _id: new ObjectId(req.params.id) };
+      const query = { _id: new ObjectId(req.params.id)};
+      const options = { upsert: true};
       const data = {
         $set: {
           image: req.body.image,
@@ -78,7 +83,7 @@ async function run() {
           stock_status: req.body.stock_status,
         },
       };
-      const result = await craftCollection.updateOne(query, data);
+      const result = await craftCollection.updateOne(query, data, options);
       console.log(result);
       res.send(result);
     });
